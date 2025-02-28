@@ -1,0 +1,98 @@
+/* استایل‌های قبلی پروژه */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.task-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.task-details {
+    width: 100%;
+    text-align: center;
+}
+
+.task-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.priority-text {
+    margin: 0;
+    flex-grow: 1;
+    text-align: left;
+    padding-left: 10px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal input, .modal select {
+    margin: 5px 0;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.date-inputs, .date-inputs-modal {
+    display: flex;
+    gap: 5px;
+    margin: 5px auto;
+    justify-content: center;
+}
+
+/* استایل‌های جدید برای FullCalendar */
+#calendar {
+    max-width: 800px; /* تنظیم عرض حداکثری تقویم */
+    margin: 0 auto; /* مرکز کردن تقویم */
+}
+
+.fc-daygrid-day {
+    height: 30px !important; /* کاهش ارتفاع هر سلول روز به 30px */
+    width: 50px !important; /* کاهش عرض هر سلول روز به 50px */
+}
+
+.fc-daygrid-day-number {
+    font-size: 12px !important; /* کاهش اندازه فونت شماره روزها */
+}
+
+.fc-event {
+    font-size: 10px !important; /* کاهش اندازه فونت رویدادها (تسک‌ها) */
+    padding: 2px !important; /* کاهش پدینگ رویدادها */
+}

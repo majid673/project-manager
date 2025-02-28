@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Project Manager</h1>
+    <a href="{{ url_for('reports') }}">View Reports</a> <!-- Added Reports link -->
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        <h2>Your Projects</h2>
+        <ul>
+            {% for project in projects %}
+                <li><a href="{{ url_for('project', project_id=project.id) }}">{{ project.name }} ({{ project.category }})</a></li>
+            {% endfor %}
+        </ul>
+        <h2>Add New Project</h2>
+        <form method="POST" action="{{ url_for('new_project') }}">
+            <input type="text" name="name" placeholder="Project Name" required>
+            <select name="category" required>
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Urgent">Urgent</option>
+                <option value="General" selected>General</option>
+            </select>
+            <button type="submit">New Project</button>
+        </form>
+    {% else %}
+        <h2>Login</h2>
+        <form method="POST" action="{{ url_for('login') }}">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <select name="role" required>
+                <option value="Manager">Manager</option>
+                <option value="Editor">Editor</option>
+                <option value="Viewer" selected>Viewer</option>
+            </select>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+    {% endif %}
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

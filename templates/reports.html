@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reports - Project Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Add Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Project and Task Reports</h1>
+    <a href="{{ url_for('index') }}">Back to Projects</a>
+
+    <h2>Task Distribution (Next 7 Days)</h2>
+    <canvas id="taskChart" width="400" height="200"></canvas>
+
+    <h2>Tasks by Date</h2>
+    {% for date in date_range %}
+        <h3>{{ date }}</h3>
+        {% if tasks_by_date[date] %}
+            <ul>
+                {% for task in tasks_by_date[date] %}
+                    <li>
+                        {{ task.title }} - Deadline: {{ task.deadline }} - Priority: {{ task.priority }} - Status: {{ task.status }} 
+                        (Project: {{ task.project.name }})
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No tasks due on this date.</p>
+        {% endif %}
+    {% endfor %}
+
+    <script>
+        // Create chart using Chart.js
+        const ctx = document.getElementById('taskChart').getContext('2d');
+        const taskChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ chart_labels | tojson | safe }},
+                datasets: [{
+                    label: 'Number of Tasks',
+                    data: {{ chart_data | tojson | safe }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Tasks'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

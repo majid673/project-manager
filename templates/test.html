@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Page</title>
+</head>
+<body>
+    <h1>Test Page for Form and Button</h1>
+    <form id="testForm" method="POST" action="/test">
+        <input type="text" name="testInput" placeholder="Test Input" required>
+        <button type="submit" id="testSubmitButton">Submit Test Form</button>
+    </form>
+    <button id="testButton">Test Button</button>
+    <p>Go back to <a href="/login">Login</a></p>
+    <script>
+        // Debug form submission
+        document.getElementById('testForm').addEventListener('submit', function(event) {
+            console.log('Test form submit event triggered!');
+            event.preventDefault(); // Stop form submission to debug
+            alert('Test form is about to be submitted!');
+        });
+
+        // Debug button click separately
+        document.getElementById('testSubmitButton').addEventListener('click', function(event) {
+            console.log('Test submit button click event triggered!');
+        });
+
+        // Debug test button click
+        document.getElementById('testButton').addEventListener('click', function(event) {
+            console.log('Test button clicked!');
+            alert('Test button works!');
+        });
+    </script>
+</body>
+</html>

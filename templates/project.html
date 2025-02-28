@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ project.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Adding FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
+</head>
+<body>
+    <h1>{{ project.name }}</h1>
+    <a href="{{ url_for('index') }}">Back to Projects</a>
+    <h2>Tasks</h2>
+    <ul id="tasksList">
+        {% for task in tasks %}
+            <li class="task-item">
+                <div class="task-details">
+                    {{ task.title }} - Deadline: {{ task.deadline }} - Priority: {{ task.priority }} - Status: {{ task.status }}
+                </div>
+                <div class="task-actions">
+                    {% if current_user.role in ['Manager', 'Editor'] %}
+                        <button onclick="openEditModal({{ task.id }})">Edit</button>
+                    {% endif %}
+                    {% if current_user.role == 'Manager' %}
+                        <form method="POST" action="{{ url_for('delete_task', task_id=task.id) }}" class="delete-form">
+                            <button type="submit" name="delete" value="{{ task.id }}">Delete</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <h2>Calendar of Deadlines</h2>
+    <div id='calendar'></div>
+    <form id="newTaskForm" method="POST" action="{{ url_for('new_task', project_id=project.id) }}">
+        <input type="text" name="title" placeholder="Task Title" required>
+        <input type="date" name="deadline" required>
+        <select name="priority">
+            <option value="High">High</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="Low">Low</option>
+        </select>
+        {% if current_user.role in ['Manager', 'Editor'] %}
+            <button type="submit">Add Task</button>
+        {% endif %}
+    </form>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <input type="text" id="editTitle" placeholder="Task Title" required>
+            <input type="date" id="editDeadline" required>
+            <select id="editPriority">
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+            <select id="editStatus">
+                <option value="Pending">Pending</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <button onclick="saveEdit()">Save Changes</button>
+            <button onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <!-- Adding FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: function(info, successCallback, failureCallback) {
+                    fetch(`/api/tasks?project_id=${window.location.pathname.split('/').pop()}`)
+                        .then(response => {
+                            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                            return response.json();
+                        })
+                        .then(tasks => {
+                            const events = tasks.map(task => ({
+                                title: `${task.title} (Priority: ${task.priority})`,
+                                start: task.deadline,
+                                color: task.priority === "High" ? "red" : task.priority === "Medium" ? "blue" : "green"
+                            }));
+                            successCallback(events);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching tasks for calendar:', error);
+                            failureCallback(error);
+                        });
+                }
+            });
+            calendar.render();
+        });
+    </script>
+</body>
+</html>
