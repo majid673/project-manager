@@ -19,3 +19,6 @@ A web application for managing projects and tasks built with Flask and Python.
    ```bash
    git clone https://github.com/majid673/project-manager.git
    cd project-manager
+## Demo
+You can view the live demo of the project here:  
+[https://project-manager-mo58.onrender.com](https://project-manager-mo58.onrender.com)
