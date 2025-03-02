@@ -22,3 +22,7 @@ A web application for managing projects and tasks built with Flask and Python.
 ## Demo
 You can view the live demo of the project here:  
 [https://project-manager-mo58.onrender.com](https://project-manager-mo58.onrender.com)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
