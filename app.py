@@ -66,8 +66,8 @@ def load_user(user_id):
 
 # Email sending function
 def send_reminder(task, old_task=None, email_to="majid_0280@yahoo.com", days_before=0, is_new=False):
-    email_from = os.getenv('EMAIL_FROM', 'arashar905@gmail.com')
-    password = os.getenv('EMAIL_PASSWORD', 'maym ugmc dytw mbkm')
+    email_from = os.getenv("EMAIL_FROM", "default_email@example.com")
+    password = os.getenv("EMAIL_PASSWORD", "default_password")
     
     if is_new:
         reminder_text = "New Task Notification:\n\n"
